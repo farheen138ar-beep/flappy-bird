@@ -79,6 +79,13 @@
     canvas {
       display: block;
       border-radius: 18px;
+      max-width: calc(100vw - 32px);
+      max-height: calc(100vh - 150px);
+    }
+    #gameCanvas {
+      width: 960px;
+      height: 540px;
+      object-fit: contain;
     }
 
     /* ---- OVERLAY PANELS ---- */
@@ -130,13 +137,16 @@
     }
     #start-screen .panel-title  { color: var(--deep-pink); text-shadow: 0 0 12px rgba(255,175,210,0.8); }
     #game-over-screen .panel-title {
-      color: #ad1855;
-      font-family: 'Nectar', 'Italianno', 'Brush Script MT', cursive;
-      font-size: clamp(2.8rem, 8vw, 4.2rem);
-      font-weight: 400;
-      letter-spacing: 2px;
+      color: #f1dfc3;
+      font-family: 'Berkshire Swash', 'Italianno', 'Brush Script MT', cursive;
+      font-size: clamp(3rem, 8vw, 4.8rem);
+      font-weight: 900;
+      letter-spacing: 3px;
       line-height: 0.9;
-      text-shadow: 0 3px 10px rgba(173,24,85,0.18);
+      -webkit-text-stroke: 1px #b98d62;
+      text-shadow:
+        0 3px 0 #9b7049,
+        0 7px 18px rgba(73,45,29,0.55);
     }
 
     .score-display {
@@ -330,7 +340,7 @@
   const canvas = document.getElementById('gameCanvas');
   const ctx    = canvas.getContext('2d');
 
-  const W = 400, H = 600;
+  const W = 960, H = 540;
   canvas.width  = W;
   canvas.height = H;
 
@@ -640,69 +650,155 @@
   }
 
   function drawBackground() {
-    const skyG = ctx.createLinearGradient(0, 0, 0, GROUND_Y);
-    skyG.addColorStop(0, '#63bce9');
-    skyG.addColorStop(0.72, '#bde4fa');
-    skyG.addColorStop(1, '#e8f7ff');
-    ctx.fillStyle = skyG;
+    const sky = ctx.createLinearGradient(0, 0, W, 0);
+    sky.addColorStop(0, '#6c8091');
+    sky.addColorStop(0.38, '#91aab8');
+    sky.addColorStop(0.68, '#d5bb91');
+    sky.addColorStop(1, '#f2c875');
+    ctx.fillStyle = sky;
     ctx.fillRect(0, 0, W, GROUND_Y);
 
-    ctx.fillStyle = 'rgba(255,246,184,0.45)';
-    ctx.beginPath(); ctx.arc(330, 82, 38, 0, Math.PI * 2); ctx.fill();
+    const sunset = ctx.createRadialGradient(820, 210, 20, 820, 210, 330);
+    sunset.addColorStop(0, 'rgba(255,245,185,0.95)');
+    sunset.addColorStop(0.38, 'rgba(247,205,137,0.42)');
+    sunset.addColorStop(1, 'rgba(247,205,137,0)');
+    ctx.fillStyle = sunset;
+    ctx.fillRect(480, 0, 480, GROUND_Y);
 
+    // Soft drifting storybook clouds
     for (const c of clouds) {
       ctx.save();
-      ctx.fillStyle = `rgba(255,255,255,${0.72 + c.alpha})`;
+      ctx.fillStyle = `rgba(250,248,238,${0.42 + c.alpha})`;
       ctx.beginPath();
-      ctx.ellipse(c.x, c.y, c.w * 0.42, c.h * 0.55, 0, 0, Math.PI * 2);
-      ctx.ellipse(c.x - c.w * 0.28, c.y + 6, c.w * 0.32, c.h * 0.42, 0, 0, Math.PI * 2);
-      ctx.ellipse(c.x + c.w * 0.28, c.y + 5, c.w * 0.36, c.h * 0.44, 0, 0, Math.PI * 2);
+      ctx.ellipse(c.x, c.y, c.w * 0.5, c.h * 0.42, 0, 0, Math.PI * 2);
+      ctx.ellipse(c.x - c.w * 0.28, c.y + 5, c.w * 0.28, c.h * 0.34, 0, 0, Math.PI * 2);
+      ctx.ellipse(c.x + c.w * 0.28, c.y + 4, c.w * 0.34, c.h * 0.36, 0, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
-
       if (state === STATE.PLAYING) {
-        c.x -= c.spd;
-        if (c.x + c.w < 0) { c.x = W + c.w; c.y = Math.random() * H * 0.38 + 20; }
+        c.x -= c.spd * 0.55;
+        if (c.x + c.w < 0) c.x = W + c.w;
       }
     }
 
-    drawBackgroundBirds();
-  }
+    // Snow-capped mountain
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(290, 410); ctx.lineTo(520, 82); ctx.lineTo(748, 410); ctx.closePath();
+    const mountain = ctx.createLinearGradient(520, 82, 520, 410);
+    mountain.addColorStop(0, '#ece7e3'); mountain.addColorStop(0.45, '#9da6b2'); mountain.addColorStop(1, '#626e7d');
+    ctx.fillStyle = mountain; ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(520,82); ctx.lineTo(450,198); ctx.lineTo(493,183); ctx.lineTo(520,210); ctx.lineTo(548,180); ctx.lineTo(586,198); ctx.closePath();
+    ctx.fillStyle='rgba(255,255,248,0.96)'; ctx.fill();
+    ctx.restore();
 
-  function drawBackgroundBirds() {
-    const time = Date.now() / 1000;
-    for (let i = 0; i < 5; i++) {
-      const x = ((i * 105 - time * (18 + i * 2)) % (W + 120)) + 20;
-      const y = 145 + i * 38 + Math.sin(time * 2 + i) * 8;
-      ctx.save();
-      ctx.strokeStyle = 'rgba(255,255,255,0.78)';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(x - 5, y, 6, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
-      ctx.beginPath(); ctx.arc(x + 5, y, 6, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
-      ctx.restore();
+    // Left castle cliff
+    ctx.fillStyle = '#6e8061';
+    ctx.beginPath(); ctx.moveTo(0,270); ctx.quadraticCurveTo(95,255,205,305); ctx.lineTo(205,470); ctx.lineTo(0,470); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#526d4d';
+    ctx.beginPath(); ctx.moveTo(0,330); ctx.quadraticCurveTo(95,300,205,340); ctx.lineTo(205,470); ctx.lineTo(0,470); ctx.closePath(); ctx.fill();
+
+    // Cream fairy-tale castle
+    ctx.save();
+    ctx.shadowColor='rgba(42,54,55,0.28)'; ctx.shadowBlur=12;
+    ctx.fillStyle='#dfd3b5';
+    ctx.fillRect(48,205,245,155);
+    ctx.fillRect(88,155,62,205); ctx.fillRect(205,128,68,232);
+    ctx.fillStyle='#c9b994';
+    ctx.fillRect(48,205,245,18);
+
+    function tower(x, y, w, h) {
+      ctx.fillStyle='#ddd2b5'; ctx.fillRect(x,y,w,h);
+      ctx.beginPath(); ctx.moveTo(x-9,y); ctx.lineTo(x+w/2,y-h*0.28); ctx.lineTo(x+w+9,y); ctx.closePath();
+      ctx.fillStyle='#315f63'; ctx.fill();
+      ctx.fillStyle='#f2ddbd';
+      ctx.beginPath(); ctx.ellipse(x+w/2,y+38,8,16,0,0,Math.PI*2); ctx.fill();
     }
+    tower(88,155,62,205); tower(205,128,68,232);
+    tower(22,232,48,128);
+
+    // Castle masonry and gate
+    ctx.strokeStyle='rgba(132,112,82,0.24)'; ctx.lineWidth=2;
+    for(let y=220;y<350;y+=22){ctx.beginPath();ctx.moveTo(48,y);ctx.lineTo(293,y);ctx.stroke();}
+    ctx.fillStyle='#70482d';
+    ctx.beginPath(); ctx.moveTo(118,360); ctx.lineTo(118,300); ctx.quadraticCurveTo(118,264,154,264); ctx.quadraticCurveTo(190,264,190,300); ctx.lineTo(190,360); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='#9d744f'; ctx.lineWidth=5; ctx.beginPath(); ctx.moveTo(154,268); ctx.lineTo(154,358); ctx.stroke();
+    ctx.restore();
+
+    // Autumn tree beside castle
+    ctx.fillStyle='#72502e'; ctx.fillRect(304,298,18,62);
+    ctx.fillStyle='#df8c3a';
+    for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(300+(i%3)*18,278+(i%2)*15,24-(i%2)*5,0,Math.PI*2);ctx.fill();}
+
+    // Right grassy hill
+    ctx.fillStyle='#54784c';
+    ctx.beginPath(); ctx.moveTo(650,470); ctx.quadraticCurveTo(760,338,960,376); ctx.lineTo(960,470); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#718d55';
+    ctx.beginPath(); ctx.moveTo(700,470); ctx.quadraticCurveTo(800,362,960,405); ctx.lineTo(960,470); ctx.closePath(); ctx.fill();
+
+    // Long stone bridge with three arches
+    ctx.fillStyle='#b6aa91';
+    ctx.beginPath(); ctx.moveTo(175,404); ctx.lineTo(720,404); ctx.quadraticCurveTo(735,414,720,426); ctx.lineTo(175,426); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#9a927c';
+    ctx.fillRect(175,426,545,18);
+    ctx.strokeStyle='rgba(92,82,69,0.55)'; ctx.lineWidth=3;
+    for(let x=300;x<650;x+=115){
+      ctx.beginPath();ctx.moveTo(x,426);ctx.quadraticCurveTo(x+58,360,x+116,426);ctx.closePath();ctx.stroke();
+      ctx.fillStyle='#5d7b82';ctx.fill();
+    }
+
+    // Magical white griffin / dragon at sunset
+    const t=Date.now()/1000;
+    const gx=770+Math.sin(t*0.55)*18, gy=172+Math.sin(t*1.1)*7;
+    ctx.save(); ctx.translate(gx,gy); ctx.scale(1.12,1.12);
+    ctx.fillStyle='rgba(255,250,228,0.95)'; ctx.strokeStyle='#fffdf4'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(-10,-5); ctx.quadraticCurveTo(-70,-48,-112,-18); ctx.quadraticCurveTo(-76,-8,-25,12); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(8,-8); ctx.quadraticCurveTo(74,-55,112,-20); ctx.quadraticCurveTo(70,-12,20,12); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(0,5,28,15,-0.2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(22,0);ctx.lineTo(48,-8);ctx.lineTo(28,12);ctx.closePath();ctx.fill();
+    ctx.restore();
+
+    // Large dark-green branch framing top-right
+    ctx.strokeStyle='#244b32'; ctx.lineWidth=19;
+    ctx.beginPath(); ctx.moveTo(960,0); ctx.quadraticCurveTo(885,58,790,92); ctx.stroke();
+    ctx.strokeStyle='#365d3a'; ctx.lineWidth=8;
+    ctx.beginPath();ctx.moveTo(885,45);ctx.quadraticCurveTo(850,86,858,125);ctx.moveTo(825,75);ctx.quadraticCurveTo(790,112,775,145);ctx.stroke();
+    ctx.fillStyle='#3f7046';
+    for(let i=0;i<16;i++){const lx=808+i*10-(i%3)*8,ly=20+(i%5)*23;ctx.beginPath();ctx.ellipse(lx,ly,18,8,-0.5+i*0.08,0,Math.PI*2);ctx.fill();}
+
+    // Mist around bridge and water
+    ctx.fillStyle='rgba(255,255,255,0.72)';
+    for(let i=0;i<7;i++){ctx.beginPath();ctx.ellipse(230+i*105,448+(i%2)*12,72,18,0,0,Math.PI*2);ctx.fill();}
   }
 
   function drawGround() {
     const water = ctx.createLinearGradient(0, GROUND_Y, 0, H);
-    water.addColorStop(0, '#74cee8');
-    water.addColorStop(0.25, '#43add3');
-    water.addColorStop(1, '#167aa8');
+    water.addColorStop(0, '#88bdaf');
+    water.addColorStop(0.22, '#72a9a2');
+    water.addColorStop(0.7, '#4f8792');
+    water.addColorStop(1, '#365f75');
     ctx.fillStyle = water;
     ctx.fillRect(0, GROUND_Y, W, GROUND_H);
 
-    ctx.strokeStyle = 'rgba(255,255,255,0.78)';
-    ctx.lineWidth = 3;
+    ctx.save();
+    ctx.globalAlpha = 0.22;
+    const reflection = ctx.createLinearGradient(760, GROUND_Y, 850, H);
+    reflection.addColorStop(0, '#fff4bd');
+    reflection.addColorStop(1, 'rgba(255,244,189,0)');
+    ctx.fillStyle = reflection;
+    ctx.beginPath(); ctx.moveTo(760, GROUND_Y); ctx.lineTo(865, GROUND_Y); ctx.lineTo(820, H); ctx.lineTo(690, H); ctx.closePath(); ctx.fill();
+    ctx.restore();
+
+    ctx.strokeStyle = 'rgba(232,246,224,0.72)';
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    if (state === STATE.PLAYING) groundOffset = (groundOffset + pipeSpeed) % 40;
-    for (let x = -40 + groundOffset; x < W + 40; x += 40) {
-      ctx.moveTo(x, GROUND_Y + 15);
-      ctx.quadraticCurveTo(x + 10, GROUND_Y + 8, x + 20, GROUND_Y + 15);
+    if (state === STATE.PLAYING) groundOffset = (groundOffset + pipeSpeed) % 55;
+    for (let x = -55 + groundOffset; x < W + 55; x += 55) {
+      ctx.moveTo(x, GROUND_Y + 18);
+      ctx.quadraticCurveTo(x + 14, GROUND_Y + 11, x + 28, GROUND_Y + 18);
     }
     ctx.stroke();
-
-    ctx.fillStyle = 'rgba(255,255,220,0.25)';
-    ctx.fillRect(0, GROUND_Y + 38, W, 5);
   }
 
   function drawParticles() {
