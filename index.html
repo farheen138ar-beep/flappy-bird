@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flappy Bird – Garden Adventure</title>
   <meta name="description" content="A beautiful nature-themed Flappy Bird adventure with coins, diamonds, wooden pillars and challenge modes." />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Italianno&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -118,7 +118,15 @@
       letter-spacing: 3px;
     }
     #start-screen .panel-title  { color: var(--deep-pink); text-shadow: 0 0 12px rgba(255,175,210,0.8); }
-    #game-over-screen .panel-title { color: var(--deep-pink); text-shadow: 0 0 12px rgba(255,175,210,0.8); }
+    #game-over-screen .panel-title {
+      color: #ad1855;
+      font-family: 'Nectar', 'Italianno', 'Brush Script MT', cursive;
+      font-size: clamp(2.8rem, 8vw, 4.2rem);
+      font-weight: 400;
+      letter-spacing: 2px;
+      line-height: 0.9;
+      text-shadow: 0 3px 10px rgba(173,24,85,0.18);
+    }
 
     .score-display {
       font-size: clamp(1.2rem, 3.5vw, 1.8rem);
