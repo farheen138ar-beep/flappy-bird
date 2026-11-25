@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flappy Bird – Garden Adventure</title>
   <meta name="description" content="A beautiful nature-themed Flappy Bird adventure with coins, diamonds, wooden pillars and challenge modes." />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Italianno&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Italianno&family=Berkshire+Swash&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -99,7 +99,7 @@
       background: radial-gradient(ellipse at center, rgba(255,255,255,0.94) 0%, rgba(183,225,249,0.96) 100%);
     }
     #game-over-screen {
-      background: rgba(45, 92, 113, 0.55);
+      background: rgba(91, 57, 38, 0.72);
       backdrop-filter: blur(5px);
     }
     #game-over-screen .game-over-box {
@@ -107,9 +107,20 @@
       padding: 24px 34px;
       border-radius: 24px;
       text-align: center;
-      background: linear-gradient(145deg, rgba(255,255,255,0.97), rgba(255,218,234,0.96));
-      border: 3px solid var(--baby-pink);
-      box-shadow: 0 12px 35px rgba(111,54,84,0.35), inset 0 0 18px rgba(255,255,255,0.8);
+      background: linear-gradient(145deg, #c79a72 0%, #9a6648 52%, #704934 100%);
+      border: 3px solid #f5a6c4;
+      box-shadow:
+        0 18px 35px rgba(48,27,18,0.48),
+        inset 8px 8px 16px rgba(255,221,185,0.28),
+        inset -8px -8px 16px rgba(69,39,25,0.38);
+    }
+    #game-over-screen #restart-btn {
+      color: #ff9fc5;
+      border-color: #ff9fc5;
+      background: rgba(120,70,50,0.55);
+      font-family: 'Berkshire Swash', 'Nectar', 'Brush Script MT', cursive;
+      font-weight: 400;
+      text-shadow: 0 2px 8px rgba(255,159,197,0.45);
     }
 
     .panel-title {
@@ -383,8 +394,9 @@
   resetClouds();
 
   /* ---- Bird ---- */
-  const GRAVITY    = 0.38;
-  const FLAP_FORCE = -7.2;
+  const GRAVITY    = 0.16;
+  const FLAP_FORCE = -4.8;
+  const MAX_FALL_SPEED = 3.4;
   const bird = {
     x: W * 0.25,
     y: H / 2,
@@ -416,6 +428,7 @@
   const PIPE_GAP = 150;
   let pipes = [];
   let items = [];
+  let itemTimer = 0;
   let pipeTimer = 0;
   const PIPE_INTERVAL = 125;
 
@@ -432,11 +445,6 @@
       const x = startX + i * 92;
       pillars.push({ x, gapY, scored: false });
 
-      if (i === 0 || Math.random() > 0.35) {
-        const roll = Math.random();
-        const type = roll < 0.38 ? 'coin' : roll < 0.68 ? 'diamond' : 'insect';
-        items.push({ x: x + (Math.random() * 18 - 9), y: gapY + PIPE_GAP / 2, type, collected: false, pulse: 0 });
-      }
     }
 
     pipes.push({ pillars, clusterWidth, scored: false });
@@ -445,6 +453,7 @@
   function resetPipes() {
     pipes = [];
     items = [];
+    itemTimer = 0;
     pipeTimer = 0;
   }
 
@@ -758,7 +767,7 @@
   /* ---- Main loop ---- */
   function update() {
     if (state === STATE.PLAYING) {
-      bird.vy += GRAVITY;
+      bird.vy = Math.min(bird.vy + GRAVITY, MAX_FALL_SPEED);
       bird.y += bird.vy;
 
       if (redZoneUntil > 0) {
@@ -773,8 +782,21 @@
       }
 
       pipeTimer++;
+      itemTimer++;
       const interval = Math.max(selectedMode === 'PRO' ? 92 : 105, PIPE_INTERVAL - level * 7);
       if (pipeTimer >= interval) { spawnCluster(); pipeTimer = 0; }
+      if (itemTimer >= (selectedMode === 'PRO' ? 72 : 88)) {
+        const roll = Math.random();
+        const type = roll < 0.38 ? 'coin' : roll < 0.68 ? 'diamond' : 'insect';
+        items.push({
+          x: W + 30 + Math.random() * 40,
+          y: 105 + Math.random() * 365,
+          type,
+          collected: false,
+          pulse: 0
+        });
+        itemTimer = 0;
+      }
 
       for (const cluster of pipes) {
         for (const p of cluster.pillars) p.x -= pipeSpeed;
