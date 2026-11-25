@@ -3,30 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flappy Bird – Neon Edition</title>
-  <meta name="description" content="A stunning neon-themed Flappy Bird game playable in your browser. Tap or press Space to flap!" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <title>Flappy Bird – Garden Adventure</title>
+  <meta name="description" content="A beautiful nature-themed Flappy Bird adventure with coins, diamonds, wooden pillars and challenge modes." />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --neon-cyan:  #00f5ff;
-      --neon-pink:  #ff2d78;
-      --neon-gold:  #ffd700;
-      --neon-green: #39ff14;
-      --bg-dark:    #0a0a1a;
-      --bg-mid:     #111130;
-      --panel-bg:   rgba(10, 10, 40, 0.88);
+      --baby-pink: #ffafd2;
+      --deep-pink: #ef6da7;
+      --gold: #ffd86b;
+      --sky: #75c9f4;
+      --wood-dark: #70401f;
+      --wood-light: #c58a50;
+      --bg-dark: #52aeda;
     }
 
     body {
-      background: var(--bg-dark);
+      background: linear-gradient(180deg, #87cdf7 0%, #cceeff 72%, #78c7d8 72%, #78c7d8 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      font-family: 'Orbitron', sans-serif;
+      font-family: 'Cormorant Garamond', Georgia, serif;
       overflow: hidden;
       user-select: none;
     }
@@ -52,7 +52,7 @@
       font-size: clamp(1.4rem, 4vw, 2rem);
       font-weight: 900;
       letter-spacing: 4px;
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-gold));
+      background: linear-gradient(90deg, #fff 0%, var(--baby-pink) 55%, #ff91bd 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -70,9 +70,9 @@
       border-radius: 18px;
       overflow: hidden;
       box-shadow:
-        0 0 0 2px var(--neon-cyan),
-        0 0 30px rgba(0,245,255,0.35),
-        0 0 80px rgba(0,245,255,0.12),
+        0 0 0 3px rgba(255,255,255,0.9),
+        0 0 28px rgba(255,175,210,0.65),
+        0 0 70px rgba(76,167,210,0.38),
         0 20px 60px rgba(0,0,0,0.7);
     }
 
@@ -96,10 +96,20 @@
     .overlay.hidden { opacity: 0; pointer-events: none; }
 
     #start-screen {
-      background: radial-gradient(ellipse at center, rgba(0,20,50,0.92) 0%, rgba(5,5,20,0.97) 100%);
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.94) 0%, rgba(183,225,249,0.96) 100%);
     }
     #game-over-screen {
-      background: radial-gradient(ellipse at center, rgba(40,0,20,0.92) 0%, rgba(5,5,20,0.97) 100%);
+      background: rgba(45, 92, 113, 0.55);
+      backdrop-filter: blur(5px);
+    }
+    #game-over-screen .game-over-box {
+      min-width: 270px;
+      padding: 24px 34px;
+      border-radius: 24px;
+      text-align: center;
+      background: linear-gradient(145deg, rgba(255,255,255,0.97), rgba(255,218,234,0.96));
+      border: 3px solid var(--baby-pink);
+      box-shadow: 0 12px 35px rgba(111,54,84,0.35), inset 0 0 18px rgba(255,255,255,0.8);
     }
 
     .panel-title {
@@ -107,13 +117,13 @@
       font-weight: 900;
       letter-spacing: 3px;
     }
-    #start-screen .panel-title  { color: var(--neon-cyan); text-shadow: 0 0 20px var(--neon-cyan); }
-    #game-over-screen .panel-title { color: var(--neon-pink); text-shadow: 0 0 20px var(--neon-pink); }
+    #start-screen .panel-title  { color: var(--deep-pink); text-shadow: 0 0 12px rgba(255,175,210,0.8); }
+    #game-over-screen .panel-title { color: var(--deep-pink); text-shadow: 0 0 12px rgba(255,175,210,0.8); }
 
     .score-display {
       font-size: clamp(1.2rem, 3.5vw, 1.8rem);
-      color: var(--neon-gold);
-      text-shadow: 0 0 12px var(--neon-gold);
+      color: var(--gold);
+      text-shadow: 0 0 12px var(--gold);
     }
     .best-display {
       font-size: clamp(0.75rem, 2vw, 1rem);
@@ -130,12 +140,12 @@
 
     .btn {
       padding: 14px 44px;
-      border: 2px solid var(--neon-cyan);
+      border: 2px solid var(--baby-pink);
       border-radius: 50px;
-      background: rgba(0,245,255,0.08);
-      color: var(--neon-cyan);
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.8rem, 2vw, 1rem);
+      background: rgba(255,175,210,0.12);
+      color: var(--deep-pink);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
       font-weight: 700;
       letter-spacing: 3px;
       cursor: pointer;
@@ -178,9 +188,19 @@
       letter-spacing: 2px;
     }
     .hud-badge span.value {
-      color: var(--neon-gold);
-      text-shadow: 0 0 8px var(--neon-gold);
+      color: var(--gold);
+      text-shadow: 0 0 8px var(--gold);
     }
+
+    .mode-buttons { display: flex; gap: 10px; }
+    .mode-buttons .btn { padding: 10px 22px; border-color: var(--baby-pink); color: #b84f80; }
+    #red-zone {
+      position: absolute; inset: 0; border: 8px solid #ef2b45; border-radius: 18px;
+      opacity: 0; pointer-events: none; box-shadow: inset 0 0 40px rgba(239,43,69,0.75); transition: opacity 0.2s;
+      z-index: 5;
+    }
+    #red-zone.active { opacity: 1; }
+    #red-zone span { position: absolute; top: 54px; left: 0; right: 0; text-align: center; color: white; text-shadow: 0 2px 8px #b00022; font-family: 'Inter', sans-serif; }
 
     .controls-hint {
       font-family: 'Inter', sans-serif;
@@ -195,7 +215,7 @@
 <canvas id="starfield"></canvas>
 
 <div id="wrapper">
-  <h1 class="game-title">⚡ FLAPPY BIRD</h1>
+  <h1 class="game-title">🌸 Garden Bird Adventure</h1>
 
   <div id="canvas-container">
     <canvas id="gameCanvas"></canvas>
@@ -210,22 +230,32 @@
         <span class="label">BEST</span>
         <span class="value" id="hud-best">0</span>
       </div>
+      <div class="hud-badge">
+        <span class="label">LEVEL</span>
+        <span class="value" id="hud-level">1</span>
+      </div>
     </div>
+    <div id="red-zone"><span id="red-zone-time">DANGER 10</span></div>
 
     <!-- Start Screen -->
     <div class="overlay" id="start-screen">
-      <div class="panel-title">READY?</div>
-      <p class="hint-text">🐦 Navigate through the pipes</p>
-      <button class="btn" id="start-btn">PLAY</button>
-      <p class="hint-text">SPACE · CLICK · TAP</p>
+      <div class="panel-title">Choose Your Challenge</div>
+      <p class="hint-text">Collect 🪙 coins and 💎 diamonds · Avoid insects 🐞</p>
+      <div class="mode-buttons">
+        <button class="btn" id="hard-btn">HARD</button>
+        <button class="btn" id="pro-btn">PRO</button>
+      </div>
+      <p class="hint-text">SPACE · CLICK · TAP TO FLAP</p>
     </div>
 
     <!-- Game Over Screen -->
     <div class="overlay hidden" id="game-over-screen">
-      <div class="panel-title">GAME OVER</div>
-      <div class="score-display" id="final-score">SCORE: 0</div>
-      <div class="best-display" id="final-best">BEST: 0</div>
-      <button class="btn" id="restart-btn">PLAY AGAIN</button>
+      <div class="game-over-box">
+        <div class="panel-title">GAME OVER</div>
+        <div class="score-display" id="final-score">SCORE: 0</div>
+        <div class="best-display" id="final-best">BEST: 0</div>
+        <button class="btn" id="restart-btn">PLAY AGAIN</button>
+      </div>
     </div>
   </div>
 
@@ -288,19 +318,29 @@
   /* ---- UI references ---- */
   const startScreen    = document.getElementById('start-screen');
   const gameOverScreen = document.getElementById('game-over-screen');
-  const startBtn       = document.getElementById('start-btn');
+  const hardBtn        = document.getElementById('hard-btn');
+  const proBtn         = document.getElementById('pro-btn');
   const restartBtn     = document.getElementById('restart-btn');
   const hudScore       = document.getElementById('hud-score');
   const hudBest        = document.getElementById('hud-best');
+  const hudLevel       = document.getElementById('hud-level');
   const finalScore     = document.getElementById('final-score');
   const finalBest      = document.getElementById('final-best');
+  const redZone        = document.getElementById('red-zone');
+  const redZoneTime    = document.getElementById('red-zone-time');
 
   /* ---- State ---- */
   const STATE = { IDLE: 0, PLAYING: 1, DEAD: 2 };
   let state = STATE.IDLE;
   let score = 0;
+  let level = 1;
+  let selectedMode = 'HARD';
+  let pipeSpeed = 2.6;
+  let redZoneUntil = 0;
+  let secondInsectWindow = false;
   let best  = parseInt(localStorage.getItem('fb_best') || '0', 10);
   hudBest.textContent = best;
+  hudLevel.textContent = level;
 
   /* ---- Particle pool ---- */
   let particles = [];
@@ -360,25 +400,43 @@
     if (state === STATE.IDLE) startGame();
     bird.vy = FLAP_FORCE;
     bird.flapAnim = 8;
-    spawnParticles(bird.x - 10, bird.y + 6, '#00f5ff', 6);
+    spawnParticles(bird.x - 10, bird.y + 6, '#ffafd2', 6);
   }
 
-  /* ---- Pipes ---- */
-  const PIPE_W    = 60;
-  const PIPE_GAP  = 160;
-  const PIPE_SPD  = 2.6;
+  /* ---- Wooden pillars and rewards ---- */
+  const PIPE_W = 60;
+  const PIPE_GAP = 150;
   let pipes = [];
+  let items = [];
   let pipeTimer = 0;
-  const PIPE_INTERVAL = 95;
+  const PIPE_INTERVAL = 125;
 
-  function spawnPipe() {
-    const minY = 90, maxY = H - 90 - PIPE_GAP;
-    const gapY = Math.random() * (maxY - minY) + minY;
-    pipes.push({ x: W + PIPE_W / 2, gapY, scored: false });
+  function spawnCluster() {
+    const clusterCount = level === 1 ? 1 : (level < 4 ? 2 : 3);
+    const clusterWidth = clusterCount * 92;
+    const startX = W + 40;
+    const pillars = [];
+
+    for (let i = 0; i < clusterCount; i++) {
+      const minY = 105;
+      const maxY = GROUND_Y - PIPE_GAP - 105;
+      const gapY = Math.random() * (maxY - minY) + minY;
+      const x = startX + i * 92;
+      pillars.push({ x, gapY, scored: false });
+
+      if (i === 0 || Math.random() > 0.35) {
+        const roll = Math.random();
+        const type = roll < 0.38 ? 'coin' : roll < 0.68 ? 'diamond' : 'insect';
+        items.push({ x: x + (Math.random() * 18 - 9), y: gapY + PIPE_GAP / 2, type, collected: false, pulse: 0 });
+      }
+    }
+
+    pipes.push({ pillars, clusterWidth, scored: false });
   }
 
   function resetPipes() {
     pipes = [];
+    items = [];
     pipeTimer = 0;
   }
 
@@ -388,10 +446,17 @@
   let groundOffset = 0;
 
   /* ---- Game flow ---- */
-  function startGame() {
-    state  = STATE.PLAYING;
-    score  = 0;
+  function startGame(mode = selectedMode) {
+    selectedMode = mode;
+    state = STATE.PLAYING;
+    score = 0;
+    level = 1;
+    pipeSpeed = mode === 'PRO' ? 3.2 : 2.6;
+    redZoneUntil = 0;
+    secondInsectWindow = false;
+    redZone.classList.remove('active');
     hudScore.textContent = 0;
+    hudLevel.textContent = 1;
     resetBird();
     resetPipes();
     particles = [];
@@ -419,17 +484,20 @@
     if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); flap(); }
   });
   canvas.addEventListener('pointerdown', e => { e.preventDefault(); flap(); });
-  startBtn.addEventListener('click',   startGame);
-  restartBtn.addEventListener('click', startGame);
+  hardBtn.addEventListener('click', () => startGame('HARD'));
+  proBtn.addEventListener('click', () => startGame('PRO'));
+  restartBtn.addEventListener('click', () => startGame(selectedMode));
 
   /* ---- Collision ---- */
   function checkCollision() {
     const bx = bird.x, by = bird.y, br = bird.r - 4;
     if (by - br < 0 || by + br > GROUND_Y) return true;
-    for (const p of pipes) {
-      const hw = PIPE_W / 2 + 2;
-      if (bx + br > p.x - hw && bx - br < p.x + hw) {
-        if (by - br < p.gapY || by + br > p.gapY + PIPE_GAP) return true;
+    for (const cluster of pipes) {
+      for (const p of cluster.pillars) {
+        const hw = PIPE_W / 2 + 2;
+        if (bx + br > p.x - hw && bx - br < p.x + hw) {
+          if (by - br < p.gapY || by + br > p.gapY + PIPE_GAP) return true;
+        }
       }
     }
     return false;
@@ -438,58 +506,39 @@
   /* ---- Draw helpers ---- */
   function drawPipe(p) {
     const hw = PIPE_W / 2;
-    const capH = 24, capW = PIPE_W + 10;
+    const capH = 28;
+    const capW = PIPE_W + 12;
     const capX = p.x - capW / 2;
 
     ctx.save();
+    ctx.shadowColor = 'rgba(74,47,25,0.45)';
+    ctx.shadowBlur = 8;
 
-    // Top pipe body
-    const tG = ctx.createLinearGradient(p.x - hw, 0, p.x + hw, 0);
-    tG.addColorStop(0, '#1a6b3a');
-    tG.addColorStop(0.4, '#3ddc84');
-    tG.addColorStop(1, '#0f4525');
-    ctx.fillStyle = tG;
-    ctx.fillRect(p.x - hw, 0, PIPE_W, p.gapY - capH);
+    function drawWoodBlock(x, y, w, h) {
+      const wood = ctx.createLinearGradient(x, 0, x + w, 0);
+      wood.addColorStop(0, '#5d351b');
+      wood.addColorStop(0.18, '#bc8050');
+      wood.addColorStop(0.48, '#dda86d');
+      wood.addColorStop(0.72, '#966036');
+      wood.addColorStop(1, '#4e2d18');
+      ctx.fillStyle = wood;
+      ctx.fillRect(x, y, w, h);
 
-    // Top cap
-    const tcG = ctx.createLinearGradient(capX, 0, capX + capW, 0);
-    tcG.addColorStop(0, '#155e32');
-    tcG.addColorStop(0.4, '#4de891');
-    tcG.addColorStop(1, '#0d3a1f');
-    ctx.fillStyle = tcG;
-    ctx.beginPath();
-    ctx.roundRect(capX, p.gapY - capH, capW, capH, [0, 0, 8, 8]);
-    ctx.fill();
+      ctx.strokeStyle = 'rgba(82,43,22,0.55)';
+      ctx.lineWidth = 2;
+      for (let yy = y + 18; yy < y + h; yy += 32) {
+        ctx.beginPath(); ctx.moveTo(x + 5, yy); ctx.bezierCurveTo(x + w * 0.3, yy - 6, x + w * 0.7, yy + 8, x + w - 5, yy); ctx.stroke();
+      }
+      ctx.strokeStyle = 'rgba(255,220,170,0.35)';
+      ctx.beginPath(); ctx.moveTo(x + w * 0.22, y); ctx.lineTo(x + w * 0.22, y + h); ctx.stroke();
+    }
 
-    // Bottom pipe body
-    const bG = ctx.createLinearGradient(p.x - hw, 0, p.x + hw, 0);
-    bG.addColorStop(0, '#1a6b3a');
-    bG.addColorStop(0.4, '#3ddc84');
-    bG.addColorStop(1, '#0f4525');
-    ctx.fillStyle = bG;
-    ctx.fillRect(p.x - hw, p.gapY + PIPE_GAP + capH, PIPE_W, H - (p.gapY + PIPE_GAP + capH));
+    drawWoodBlock(p.x - hw, 0, PIPE_W, p.gapY - capH);
+    drawWoodBlock(p.x - hw, p.gapY + PIPE_GAP + capH, PIPE_W, GROUND_Y - (p.gapY + PIPE_GAP + capH));
 
-    // Bottom cap
-    const bcG = ctx.createLinearGradient(capX, 0, capX + capW, 0);
-    bcG.addColorStop(0, '#155e32');
-    bcG.addColorStop(0.4, '#4de891');
-    bcG.addColorStop(1, '#0d3a1f');
-    ctx.fillStyle = bcG;
-    ctx.beginPath();
-    ctx.roundRect(capX, p.gapY + PIPE_GAP, capW, capH, [8, 8, 0, 0]);
-    ctx.fill();
-
-    // Neon gap edge lines
-    ctx.strokeStyle = 'rgba(61,220,132,0.5)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(p.x - hw, p.gapY);
-    ctx.lineTo(p.x + hw, p.gapY);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(p.x - hw, p.gapY + PIPE_GAP);
-    ctx.lineTo(p.x + hw, p.gapY + PIPE_GAP);
-    ctx.stroke();
+    ctx.shadowBlur = 5;
+    drawWoodBlock(capX, p.gapY - capH, capW, capH);
+    drawWoodBlock(capX, p.gapY + PIPE_GAP, capW, capH);
 
     ctx.restore();
   }
@@ -505,7 +554,7 @@
       const a = (i / bird.trail.length) * 0.25;
       ctx.beginPath();
       ctx.arc(t.x, t.y, bird.r * 0.5 * (i / bird.trail.length), 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0,245,255,${a.toFixed(2)})`;
+      ctx.fillStyle = `rgba(255,175,210,${a.toFixed(2)})`;
       ctx.fill();
     }
 
@@ -516,8 +565,8 @@
 
     // Glow halo
     const grd = ctx.createRadialGradient(0, 0, 4, 0, 0, bird.r + 10);
-    grd.addColorStop(0, 'rgba(255,215,0,0.5)');
-    grd.addColorStop(1, 'rgba(255,215,0,0)');
+    grd.addColorStop(0, 'rgba(255,175,210,0.55)');
+    grd.addColorStop(1, 'rgba(255,175,210,0)');
     ctx.fillStyle = grd;
     ctx.beginPath();
     ctx.arc(0, 0, bird.r + 10, 0, Math.PI * 2);
@@ -525,9 +574,9 @@
 
     // Body
     const bodyGrd = ctx.createRadialGradient(-4, -4, 2, 0, 0, bird.r);
-    bodyGrd.addColorStop(0, '#ffe94d');
-    bodyGrd.addColorStop(0.6, '#ffb400');
-    bodyGrd.addColorStop(1, '#d47000');
+    bodyGrd.addColorStop(0, '#ffe1ef');
+    bodyGrd.addColorStop(0.6, '#ffabd1');
+    bodyGrd.addColorStop(1, '#dc709f');
     ctx.fillStyle = bodyGrd;
     ctx.beginPath();
     ctx.arc(0, 0, bird.r, 0, Math.PI * 2);
@@ -537,7 +586,7 @@
     const wingAngle = bird.flapAnim > 0 ? -0.6 : 0.3;
     ctx.save();
     ctx.rotate(wingAngle);
-    ctx.fillStyle = '#ffd040';
+    ctx.fillStyle = '#ffb4d2';
     ctx.beginPath();
     ctx.ellipse(-8, 4, 12, 7, -0.4, 0, Math.PI * 2);
     ctx.fill();
@@ -562,7 +611,7 @@
     ctx.fill();
 
     // Beak
-    ctx.fillStyle = '#ff7c1a';
+    ctx.fillStyle = '#fff07a';
     ctx.beginPath();
     ctx.moveTo(14, -2);
     ctx.lineTo(22, 1);
@@ -575,55 +624,68 @@
 
   function drawBackground() {
     const skyG = ctx.createLinearGradient(0, 0, 0, GROUND_Y);
-    skyG.addColorStop(0, '#060619');
-    skyG.addColorStop(0.5, '#0d1b4a');
-    skyG.addColorStop(1, '#0a2a6e');
+    skyG.addColorStop(0, '#63bce9');
+    skyG.addColorStop(0.72, '#bde4fa');
+    skyG.addColorStop(1, '#e8f7ff');
     ctx.fillStyle = skyG;
     ctx.fillRect(0, 0, W, GROUND_Y);
 
+    ctx.fillStyle = 'rgba(255,246,184,0.45)';
+    ctx.beginPath(); ctx.arc(330, 82, 38, 0, Math.PI * 2); ctx.fill();
+
     for (const c of clouds) {
       ctx.save();
-      const cG = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.w);
-      cG.addColorStop(0, `rgba(100,140,255,${c.alpha * 2})`);
-      cG.addColorStop(1, 'rgba(100,140,255,0)');
-      ctx.fillStyle = cG;
+      ctx.fillStyle = `rgba(255,255,255,${0.72 + c.alpha})`;
       ctx.beginPath();
-      ctx.ellipse(c.x, c.y, c.w, c.h, 0, 0, Math.PI * 2);
+      ctx.ellipse(c.x, c.y, c.w * 0.42, c.h * 0.55, 0, 0, Math.PI * 2);
+      ctx.ellipse(c.x - c.w * 0.28, c.y + 6, c.w * 0.32, c.h * 0.42, 0, 0, Math.PI * 2);
+      ctx.ellipse(c.x + c.w * 0.28, c.y + 5, c.w * 0.36, c.h * 0.44, 0, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
 
       if (state === STATE.PLAYING) {
         c.x -= c.spd;
-        if (c.x + c.w < 0) { c.x = W + c.w; c.y = Math.random() * H * 0.4 + 20; }
+        if (c.x + c.w < 0) { c.x = W + c.w; c.y = Math.random() * H * 0.38 + 20; }
       }
+    }
+
+    drawBackgroundBirds();
+  }
+
+  function drawBackgroundBirds() {
+    const time = Date.now() / 1000;
+    for (let i = 0; i < 5; i++) {
+      const x = ((i * 105 - time * (18 + i * 2)) % (W + 120)) + 20;
+      const y = 145 + i * 38 + Math.sin(time * 2 + i) * 8;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,255,255,0.78)';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(x - 5, y, 6, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
+      ctx.beginPath(); ctx.arc(x + 5, y, 6, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
+      ctx.restore();
     }
   }
 
   function drawGround() {
-    const gG = ctx.createLinearGradient(0, GROUND_Y, 0, H);
-    gG.addColorStop(0, '#1a3d1a');
-    gG.addColorStop(0.3, '#2a5e2a');
-    gG.addColorStop(1, '#0d1f0d');
-    ctx.fillStyle = gG;
+    const water = ctx.createLinearGradient(0, GROUND_Y, 0, H);
+    water.addColorStop(0, '#74cee8');
+    water.addColorStop(0.25, '#43add3');
+    water.addColorStop(1, '#167aa8');
+    ctx.fillStyle = water;
     ctx.fillRect(0, GROUND_Y, W, GROUND_H);
 
-    ctx.strokeStyle = 'rgba(61,220,132,0.8)';
-    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = 'rgba(255,255,255,0.78)';
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(0, GROUND_Y);
-    ctx.lineTo(W, GROUND_Y);
+    if (state === STATE.PLAYING) groundOffset = (groundOffset + pipeSpeed) % 40;
+    for (let x = -40 + groundOffset; x < W + 40; x += 40) {
+      ctx.moveTo(x, GROUND_Y + 15);
+      ctx.quadraticCurveTo(x + 10, GROUND_Y + 8, x + 20, GROUND_Y + 15);
+    }
     ctx.stroke();
 
-    if (state === STATE.PLAYING) groundOffset = (groundOffset + PIPE_SPD) % 40;
-    ctx.strokeStyle = 'rgba(61,220,132,0.3)';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([20, 20]);
-    ctx.lineDashOffset = -groundOffset;
-    ctx.beginPath();
-    ctx.moveTo(0, GROUND_Y + 15);
-    ctx.lineTo(W, GROUND_Y + 15);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(255,255,220,0.25)';
+    ctx.fillRect(0, GROUND_Y + 38, W, 5);
   }
 
   function drawParticles() {
@@ -646,13 +708,38 @@
     }
   }
 
+  function drawItem(item) {
+    ctx.save();
+    ctx.translate(item.x, item.y);
+    item.pulse += 0.08;
+    const scale = 1 + Math.sin(item.pulse) * 0.08;
+    ctx.scale(scale, scale);
+
+    if (item.type === 'coin') {
+      ctx.fillStyle = '#ffd86b'; ctx.strokeStyle = '#fff3a6'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(0, 0, 11, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#c78a24'; ctx.font = 'bold 12px Georgia'; ctx.textAlign = 'center'; ctx.fillText('$', 0, 4);
+    } else if (item.type === 'diamond') {
+      ctx.fillStyle = '#52d9ff'; ctx.strokeStyle = '#e5fbff'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(0, -13); ctx.lineTo(12, -3); ctx.lineTo(7, 11); ctx.lineTo(-7, 11); ctx.lineTo(-12, -3); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.beginPath(); ctx.moveTo(-12,-3); ctx.lineTo(12,-3); ctx.moveTo(0,-13); ctx.lineTo(0,11); ctx.stroke();
+    } else {
+      ctx.fillStyle = '#7d4d25';
+      ctx.beginPath(); ctx.ellipse(0, 0, 9, 12, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ff8da8'; ctx.beginPath(); ctx.arc(-5,-4,3,0,Math.PI*2); ctx.arc(5,-4,3,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle = '#4a2c18'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(-8,-8); ctx.lineTo(-15,-14); ctx.moveTo(8,-8); ctx.lineTo(15,-14); ctx.moveTo(-8,8); ctx.lineTo(-15,14); ctx.moveTo(8,8); ctx.lineTo(15,14); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   let scoreFlash = 0;
   function drawScorePopup() {
     if (scoreFlash > 0) {
       ctx.save();
       ctx.globalAlpha = scoreFlash / 20;
       ctx.fillStyle = '#ffd700';
-      ctx.font = `bold ${36 - (20 - scoreFlash)}px Orbitron, sans-serif`;
+      ctx.font = `bold ${36 - (20 - scoreFlash)}px Cormorant Garamond, Georgia, serif`;
       ctx.textAlign = 'center';
       ctx.fillText(`+1`, W / 2, H / 3);
       ctx.restore();
@@ -664,21 +751,74 @@
   function update() {
     if (state === STATE.PLAYING) {
       bird.vy += GRAVITY;
-      bird.y  += bird.vy;
+      bird.y += bird.vy;
+
+      if (redZoneUntil > 0) {
+        const remaining = Math.ceil((redZoneUntil - Date.now()) / 1000);
+        if (remaining <= 0) {
+          redZoneUntil = 0;
+          secondInsectWindow = false;
+          redZone.classList.remove('active');
+        } else {
+          redZoneTime.textContent = `DANGER ${remaining}`;
+        }
+      }
 
       pipeTimer++;
-      if (pipeTimer >= PIPE_INTERVAL) { spawnPipe(); pipeTimer = 0; }
+      const interval = Math.max(selectedMode === 'PRO' ? 92 : 105, PIPE_INTERVAL - level * 7);
+      if (pipeTimer >= interval) { spawnCluster(); pipeTimer = 0; }
+
+      for (const cluster of pipes) {
+        for (const p of cluster.pillars) p.x -= pipeSpeed;
+      }
 
       for (let i = pipes.length - 1; i >= 0; i--) {
-        pipes[i].x -= PIPE_SPD;
-        if (!pipes[i].scored && pipes[i].x + PIPE_W / 2 < bird.x) {
-          pipes[i].scored = true;
+        const cluster = pipes[i];
+        if (!cluster.scored && cluster.pillars.every(p => p.x + PIPE_W / 2 < bird.x)) {
+          cluster.scored = true;
           score++;
           hudScore.textContent = score;
           scoreFlash = 20;
-          spawnParticles(bird.x, bird.y - 20, '#ffd700', 10);
+          spawnParticles(bird.x, bird.y - 20, '#ffd86b', 10);
         }
-        if (pipes[i].x < -PIPE_W) pipes.splice(i, 1);
+        if (cluster.pillars.every(p => p.x < -PIPE_W - 20)) pipes.splice(i, 1);
+      }
+
+      for (let i = items.length - 1; i >= 0; i--) {
+        const item = items[i];
+        item.x -= pipeSpeed;
+        const distance = Math.hypot(bird.x - item.x, bird.y - item.y);
+        if (!item.collected && distance < bird.r + 13) {
+          item.collected = true;
+          if (item.type === 'coin') {
+            score += 1;
+            spawnParticles(item.x, item.y, '#ffd86b', 12);
+            scoreFlash = 20;
+          } else if (item.type === 'diamond') {
+            score += 3;
+            spawnParticles(item.x, item.y, '#52d9ff', 16);
+            scoreFlash = 20;
+          } else {
+            score = Math.max(0, score - 1);
+            spawnParticles(item.x, item.y, '#e95c78', 14);
+            if (secondInsectWindow && redZoneUntil > Date.now()) {
+              endGame();
+            } else {
+              secondInsectWindow = true;
+              redZoneUntil = Date.now() + 10000;
+              redZone.classList.add('active');
+            }
+          }
+          hudScore.textContent = score;
+        }
+        if (item.collected || item.x < -30) items.splice(i, 1);
+      }
+
+      const newLevel = score < 5 ? 1 : score < 12 ? 2 : 3;
+      if (newLevel !== level) {
+        level = newLevel;
+        hudLevel.textContent = level;
+        pipeSpeed = (selectedMode === 'PRO' ? 3.2 : 2.6) + (level - 1) * 0.45;
       }
 
       if (checkCollision()) endGame();
@@ -692,7 +832,10 @@
   function draw() {
     ctx.clearRect(0, 0, W, H);
     drawBackground();
-    for (const p of pipes) drawPipe(p);
+    for (const cluster of pipes) {
+      for (const p of cluster.pillars) drawPipe(p);
+    }
+    for (const item of items) if (!item.collected) drawItem(item);
     drawGround();
     drawBird();
     drawParticles();
